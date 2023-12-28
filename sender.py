@@ -50,10 +50,9 @@ def enviar_mail(nombre, correo, subject, body_msg, fecha02, redondeo, fila_desti
     smtp.connect(servidor_smtp) 
     smtp.login(sender, password)
     smtp.sendmail(sender, correo, email.as_string())
-    smtp.quit()
-    #
     print("Correo enviado a: "+ nombre + " (" + correo + ")\n")
     update_sent_data(fila_destino, columna_destino)
+    smtp.quit()
     # espero X tiempo entre cada envío de mail
     time.sleep(tiempo_entre_cada_mail)
 
