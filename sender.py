@@ -37,6 +37,7 @@ def es_entero(valor):
 
 
 def enviar_mail(nombre, correo, subject, body_msg, fecha02, redondeo, fila_destino, columna_destino):
+    print("Enviando correo a: "+ nombre + " (" + correo + ")\n")
     es_entero(redondeo)
     email               = EmailMessage()
     email["From"]       = sender
@@ -59,6 +60,7 @@ def enviar_mail(nombre, correo, subject, body_msg, fecha02, redondeo, fila_desti
 
 
 def update_sent_data(fila_destino, columna_destino):
+    print("Actualizando Excel\n")
     # Abrir el archivo Excel
     open_excel = openpyxl.load_workbook(libro_excel)
     # Seleccionar la hoja de trabajo (puedes cambiar el nombre de la hoja según tu caso)
@@ -68,7 +70,7 @@ def update_sent_data(fila_destino, columna_destino):
     hoja_trabajo.cell(row=fila_destino, column=columna_destino, value=fecha_hora_formateada)
     # Guardar el archivo Excel
     open_excel.save(libro_excel)
-    print("Excel actualizado\n")
+    print("Excel actualizado")
 
 
 
