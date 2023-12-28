@@ -19,9 +19,8 @@ jobs:
 
     - name: run container with script
       run: |
-        docker run --rm \
-        -v $PWD:/data \     
-        -e libro_excel='/data/clients.xlsx' \
+        docker run -t -v $PWD:/ \     
+        -e libro_excel='/template_clients.xlsx' \
         -e hoja_de_trabajo='main_page' \
         -e tiempo_entre_cada_mail=2 \
         -e pais_zona_horaria='America/Argentina/Buenos_Aires' \
