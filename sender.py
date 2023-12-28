@@ -46,6 +46,7 @@ def enviar_mail(nombre, correo, subject, body_msg, fecha02, redondeo, fila_desti
     email["Subject"]    = subject
     email.set_content(body_msg)
     #
+    smtp.connect(servidor_smtp) 
     smtp                = smtplib.SMTP_SSL(servidor_smtp)
     smtp.login(sender, password)
     smtp.sendmail(sender, correo, email.as_string())
@@ -55,9 +56,6 @@ def enviar_mail(nombre, correo, subject, body_msg, fecha02, redondeo, fila_desti
     update_sent_data(fila_destino, columna_destino)
     # espero X tiempo entre cada envío de mail
     time.sleep(tiempo_entre_cada_mail)
-
-
-
 
 
 def update_sent_data(fila_destino, columna_destino):
