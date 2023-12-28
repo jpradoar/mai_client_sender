@@ -20,11 +20,7 @@ jobs:
     - name: run container with script
       run: |
         docker run --rm \
-        -v $PWD:/data \
-        -e servidor_smtp='${{ secrets.servidor_smtp }}' \
-        -e puerto_smtp='${{ secrets.puerto_smtp }}' \
-        -e sender='${{ secrets.sender }}' \
-        -e password='${{ secrets.password }}' \        
+        -v $PWD:/data \     
         -e libro_excel='/data/clients.xlsx' \
         -e hoja_de_trabajo='main_page' \
         -e tiempo_entre_cada_mail=2 \
