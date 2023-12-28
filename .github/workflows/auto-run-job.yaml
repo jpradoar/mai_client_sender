@@ -1,0 +1,42 @@
+name: PythonMailSender
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'template_clients.xlsx' 
+
+jobs:
+  main-job:
+    runs-on: ubuntu-latest   
+    permissions:
+      contents: write
+    steps:
+    
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: test 01
+      run: pwd; ls -lha 
+
+    - name: run container with script
+      run: |
+        docker run --rm \
+        -v $PWD:/data \
+        -e libro_excel='/data/clients.xlsx' \
+        -e hoja_de_trabajo='main_page' \
+        -e tiempo_entre_cada_mail=1 \
+        -e pais_zona_horaria='America/Argentina/Buenos_Aires' \
+        -e servidor_smtp="{{ secret.SERVIDOR_SMTP }}" \
+        -e puerto_smtp="{{ secret.PUERTO_SMTP }}" \
+        -e sender="{{ secret.SENDER }}" \
+        -e password="{{ secret.PASSWORD }}" \
+        jpradoar/python_xls_mail_sender:latest python3 /data/sender.py
+
+    - name: test 01
+      run: pwd; ls -lha 
+      
+    - uses: EndBug/add-and-commit@v9
+      with:
+        message: 'AutoCommit: autoupdate clients.xlsx file'
+        add: '*.xlsx'               
