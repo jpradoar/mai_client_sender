@@ -1,0 +1,25 @@
+name: Producer-CI
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'clients.xlsx' # Any change in this path, make trigger build action.
+      - 'sender.py'
+
+env:
+  KEY_01: '2m0s'
+
+
+jobs:
+  main-job:
+    runs-on: ubuntu-latest    
+    steps:
+    
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: run script
+      id: script
+      run: |
+        echo "magic here" 
