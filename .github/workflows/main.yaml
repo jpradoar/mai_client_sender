@@ -24,11 +24,11 @@ jobs:
 
     - name: install docker
       run: |
-        apt-get update; apt-get install -y docker.io
+        sudo apt-get update; apt-get install -y docker.io
 
-    - name: install docker
+    - name: run container with script
       run: |
-        docker run \
+        sudo docker run \
         --rm \
         --name python \
         -it \
@@ -42,7 +42,6 @@ jobs:
         -e sender="{{ secret.SENDER }}" \
         -e password="{{ secret.PASSWORD }}" \
         jpradoar/python_xls_mail_sender:latest python3 /data/sender.py
-
 
     - uses: EndBug/add-and-commit@v9
       with:
