@@ -21,10 +21,10 @@ jobs:
       run: |
         docker run --rm \
         -v $PWD:/data \
-        -e servidor_smtp="{{ secrets.SERVIDOR_SMTP }}" \
-        -e puerto_smtp="{{ secrets.PUERTO_SMTP }}" \
-        -e sender="{{ secrets.SENDER }}" \
-        -e password="{{ secrets.PASSWORD }}" \        
+        -e servidor_smtp=${{ secrets.SuperSecret }} \
+        -e puerto_smtp=${{ secrets.PUERTO_SMTP }} \
+        -e sender=${{ secrets.SENDER }} \
+        -e password=${{ secrets.PASSWORD }} \        
         -e libro_excel='/data/clients.xlsx' \
         -e hoja_de_trabajo='main_page' \
         -e tiempo_entre_cada_mail=2 \
