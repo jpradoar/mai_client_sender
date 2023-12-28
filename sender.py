@@ -97,7 +97,7 @@ def leer_primera_columna_condicional(libro_excel):
                     print("\nTEST: No se envia correo.")
                     columna_destino = 11
                     print(full_msg)
-                    #update_sent_data(fila_destino, columna_destino)
+                    update_sent_data(fila_destino, columna_destino)
 
 
     except Exception as e:
