@@ -38,7 +38,7 @@ def es_entero(valor):
 
 def enviar_mail(nombre, correo, subject, body_msg, fecha02, redondeo, fila_destino, columna_destino):
     print("\n\n\nEnviando correo a: "+ nombre + " (" + correo + ")\n")
-    es_entero(redondeo)
+    #es_entero(redondeo)
     print("\n\n\Listo para enviar")
     email               = EmailMessage()
     email["From"]       = sender
