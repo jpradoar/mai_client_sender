@@ -8,8 +8,8 @@ on:
       - 'sender.py'
       - '.github/workflows/main.yaml'
 
-env:
-  KEY_01: '2m0s'
+#env:
+#  KEY_01: '2m0s'
 
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
 
     - name: run container with script
       run: |
-        sudo docker run \
+        docker run \
         --rm \
         --name python \
         -it \
