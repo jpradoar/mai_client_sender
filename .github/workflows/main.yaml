@@ -28,19 +28,16 @@ jobs:
 
     - name: run container with script
       run: |
-        docker run \
-        --rm \
-        --name python \
-        -it \
+        docker run -it \
         -v $PWD:/data \
         -e libro_excel='/data/clients.xlsx' \
         -e hoja_de_trabajo='main_page' \
         -e tiempo_entre_cada_mail=2 \
         -e pais_zona_horaria='America/Argentina/Buenos_Aires' \
-        -e servidor_smtp="smtp.random.com" \
-        -e puerto_smtp=1234 \
-        -e sender="xxxx@random.com" \
-        -e password="xxxx" \
+        -e servidor_smtp="{{ secret.SERVIDOR_SMTP }}" \
+        -e puerto_smtp="{{ secret.PUERTO_SMTP }}" \
+        -e sender="{{ secret.SENDER }}" \
+        -e password="{{ secret.PASSWORD }}" \
         jpradoar/python_xls_mail_sender:latest python3 /data/sender.py
 
     - uses: EndBug/add-and-commit@v9
