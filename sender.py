@@ -8,8 +8,8 @@ import time
 import os
 
 # Configuracion del documento
-libro_excel             = 'clients.xlsx'
-hoja_de_trabajo         = 'main_page'
+libro_excel             = os.environ.get('libro_excel') #'/data/clients.xlsx'
+hoja_de_trabajo         = os.environ.get('hoja_de_trabajo') #'main_page'
 tiempo_entre_cada_mail  = os.environ.get('tiempo_entre_cada_mail')
 pais_zona_horaria       = os.environ.get('pais_zona_horaria')
 
