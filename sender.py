@@ -14,10 +14,10 @@ tiempo_entre_cada_mail  = os.environ.get('tiempo_entre_cada_mail')
 pais_zona_horaria       = os.environ.get('pais_zona_horaria')
 
 # Configurar el servidor SMTP
-servidor_smtp   = os.environ.get('servidor_smtp')
-puerto_smtp     = os.environ.get('puerto_smtp')
-sender          = os.environ.get('sender')
-password        = os.environ.get('password')
+servidor_smtp   = os.environ.get('SERVIDOR_SMTP')
+puerto_smtp     = os.environ.get('PUERTO_SMTP')
+sender          = os.environ.get('SENDER')
+password        = os.environ.get('PASSWORD')
 
 # Configuracion de fecha y zona horaria
 fecha_hora_actual_utc   = datetime.now(pytz.utc)
