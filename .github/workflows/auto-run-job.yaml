@@ -19,11 +19,16 @@ jobs:
 
     - name: run container with script
       run: |
-        docker run -t -v $PWD:/ \     
-        -e libro_excel='/template_clients.xlsx' \
+        docker run --rm \
+        -v $PWD:/data \
+        -e libro_excel='/data/template_clients.xlsx' \
         -e hoja_de_trabajo='main_page' \
-        -e tiempo_entre_cada_mail=2 \
+        -e tiempo_entre_cada_mail=1 \
         -e pais_zona_horaria='America/Argentina/Buenos_Aires' \
+        -e servidor_smtp="{{ secrets.SERVIDOR_SMTP }}" \
+        -e puerto_smtp="{{ secrets.PUERTO_SMTP }}" \
+        -e sender="{{ secrets.SENDER }}" \
+        -e password="{{ secrets.PASSWORD }}" \
         jpradoar/python_xls_mail_sender:latest python3 /data/sender.py
         
     - name: copy file
