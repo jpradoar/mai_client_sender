@@ -12,6 +12,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: test 01
+      run: pwd; ls -lha 
+
     - name: run container with script
       run: |
         docker run --rm \
@@ -26,7 +29,10 @@ jobs:
         -e password="{{ secret.PASSWORD }}" \
         jpradoar/python_xls_mail_sender:latest python3 /data/sender.py
 
+    - name: test 01
+      run: pwd; ls -lha 
+      
     - uses: EndBug/add-and-commit@v9
       with:
         message: 'AutoCommit: autoupdate clients.xlsx file'
-        add: './clients.xlsx'        
+        add: '*.xlsx'               
