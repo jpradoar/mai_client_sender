@@ -1,16 +1,18 @@
 name: PythonMailSender
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'clients.xlsx' # Any change in this path, make trigger build action.
-      - 'sender.py'
-      - '.github/workflows/main.yaml'
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: false
+        default: 'none'
 
-#env:
-#  KEY_01: '2m0s'
 
+env: 
+  MSG_TIMEZONE: America/Argentina/Buenos_Aires
+  LIBRO: /data/clients.xlsx
+  HOJA: main_page
+  MAIL_TIME: 2
 
 jobs:
   main-job:
@@ -22,18 +24,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    #- name: install docker
-    #  run: |
-    #    sudo apt-get update; sudo apt-get install -y docker.io
-
     - name: run container with script
       run: |
         docker run --rm \
         -v $PWD:/data \
-        -e libro_excel='/data/clients.xlsx' \
-        -e hoja_de_trabajo='main_page' \
-        -e tiempo_entre_cada_mail=2 \
-        -e pais_zona_horaria='America/Argentina/Buenos_Aires' \
+        -e libro_excel='{{ env.LIBRO }}' \
+        -e hoja_de_trabajo='{{ env.HOJA }}' \
+        -e tiempo_entre_cada_mail={{ env.MAIL_TIME }} \
+        -e pais_zona_horaria='{{ env.MSG_TIMEZONE }}' \
         -e servidor_smtp="{{ secret.SERVIDOR_SMTP }}" \
         -e puerto_smtp="{{ secret.PUERTO_SMTP }}" \
         -e sender="{{ secret.SENDER }}" \
