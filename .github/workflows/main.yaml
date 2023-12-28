@@ -22,9 +22,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: install docker
-      run: |
-        sudo apt-get update; sudo apt-get install -y docker.io
+    #- name: install docker
+    #  run: |
+    #    sudo apt-get update; sudo apt-get install -y docker.io
 
     - name: run container with script
       run: |
