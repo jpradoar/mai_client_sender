@@ -19,7 +19,7 @@ jobs:
 
     - name: run container with script
       run: |
-        docker run --rm \
+        docker run -t \
         -v $PWD:/data \
         -e libro_excel='/data/clients.xlsx' \
         -e hoja_de_trabajo='main_page' \
@@ -28,10 +28,9 @@ jobs:
         -e SERVIDOR_SMTP={{ secrets.SERVIDOR_SMTP }} \
         -e PUERTO_SMTP={{ secrets.PUERTO_SMTP }} \
         -e SENDER={{ secrets.SENDER }} \
-        -e PASSWORD={{ secrets.PASSWORD }} \
-        jpradoar/python_xls_mail_sender:latest python3 /data/sender.py
+        -e PASSWORD={{ secrets.PASSWORD }} jpradoar/python_xls_mail_sender:latest python3 /data/sender.py
 
-    - name: run container with script
+    - name: copy file
       run: |
         cp template_clients.xlsx new_clients.xlsx
         
