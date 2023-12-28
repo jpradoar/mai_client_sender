@@ -37,9 +37,8 @@ def es_entero(valor):
 
 
 def enviar_mail(nombre, correo, subject, body_msg, fecha02, redondeo, fila_destino, columna_destino):
-    print("\n\n\nEnviando correo a: "+ nombre + " (" + correo + ")\n")
-    #es_entero(redondeo)
-    print("\n\n\Listo para enviar")
+    print("Enviando correo a: "+ nombre + " (" + correo + ")\n")
+    es_entero(redondeo)
     email               = EmailMessage()
     email["From"]       = sender
     email["To"]         = correo
@@ -51,8 +50,8 @@ def enviar_mail(nombre, correo, subject, body_msg, fecha02, redondeo, fila_desti
     smtp.login(sender, password)
     smtp.sendmail(sender, correo, email.as_string())
     print("Correo enviado a: "+ nombre + " (" + correo + ")\n")
+    smtp.quit()    
     update_sent_data(fila_destino, columna_destino)
-    smtp.quit()
     # espero X tiempo entre cada envío de mail
     time.sleep(tiempo_entre_cada_mail)
 
@@ -77,6 +76,7 @@ def leer_primera_columna_condicional(libro_excel):
     try:
         # Cargar el archivo Excel
         df = pd.read_excel(libro_excel)
+        print("Leyendo el documento .xlsx")
         # Verificar la condición en la segunda columna y luego imprimir la primera columna
         for indice, fila in df.iterrows():
                 correo          = fila[0]
