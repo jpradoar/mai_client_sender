@@ -2,7 +2,7 @@ name: Automatic-PythonMailSender
 on:
   push:
     branches:
-      - main
+      - disabled
     paths:
       - 'template_clients.xlsx' 
       - '.github/workflows/auto-run-job.yaml' 
