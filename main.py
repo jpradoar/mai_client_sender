@@ -1,0 +1,108 @@
+#!/usr/bin/python3
+
+import pandas as pd
+from email.message import EmailMessage
+import smtplib
+from datetime import datetime
+import pytz
+import openpyxl
+import time
+
+# Configuracion del documento
+libro_excel             = 'clientes.xlsx'
+hoja_de_trabajo         = 'main_page'
+tiempo_entre_cada_mail  = 2 # Segundos
+pais_zona_horaria       = 'America/Argentina/Buenos_Aires'
+
+# Configurar el servidor SMTP
+servidor_smtp   = 'smtp.server.com'
+puerto_smtp     = 999
+sender          = 'myuser@server.com'
+password        = 'zzzzzzzzzzzzzzz'
+Bcc_mail        = 'myusertest@server.com'
+SeparadorCorreos = ';'
+
+
+# Configuracion de fecha y zona horaria
+fecha_hora_actual_utc   = datetime.now(pytz.utc)
+zona_horaria            = pytz.timezone(pais_zona_horaria)
+fecha_hora_argentina    = fecha_hora_actual_utc.astimezone(zona_horaria)
+formato_fecha           = "%Y-%m-%d %H:%M:%S"
+fecha_hora_formateada   = fecha_hora_argentina.strftime(formato_fecha)
+
+
+# Actualizar la fecha de cuando se envió el correo :D 
+def update_sent_data(fila_destino, columna_destino):
+    # Abrir el archivo Excel
+    open_excel = openpyxl.load_workbook(libro_excel)
+    # Seleccionar la hoja de trabajo (puedes cambiar el nombre de la hoja según tu caso)
+    hoja_trabajo = open_excel[hoja_de_trabajo]
+    fila_destino = fila_destino + 1
+    # Escribir la fecha y hora en la celda correspondiente
+    hoja_trabajo.cell(row=fila_destino, column=columna_destino, value=fecha_hora_formateada)
+    # Guardar el archivo Excel
+    open_excel.save(libro_excel)
+    print("Excel actualizado\n")
+
+
+# Enviar mail con la inforamción obtenida del xls
+def enviar_mail(correos, MSG_SUBJECT, MAIL_FULL_MSG): 
+    for correo in correos:
+        email = EmailMessage()
+        email["From"] = sender
+        email["To"] = correo
+        email["Subject"] = MSG_SUBJECT
+        email["Bcc"] = Bcc_mail
+        email.set_content(MAIL_FULL_MSG)
+        try:
+            smtp = smtplib.SMTP_SSL(servidor_smtp)
+            smtp.login(sender, password)
+            smtp.send_message(email)
+            smtp.quit()
+            print("Correo enviado a: " + correo + "\n")
+        except Exception as MailErr:
+            print("Error al enviar correo a " + correo + ":", MailErr)
+
+
+# Leer el documento, capturar información y enviar mail si corresponde.
+# sino imprimir por pantalla el resultado de como se enviará (test)
+def LeerColumnaExcel(libro_excel):
+    try:
+        # Cargar el archivo Excel
+        df = pd.read_excel(libro_excel)
+        for indice, fila in df.iterrows():
+            EMPRESA_CORREO      = str(fila['EMPRESA_CORREO'])
+            correos             = EMPRESA_CORREO.split(SeparadorCorreos)
+            EMPRESA_NOMBRE      = str(fila['EMPRESA_NOMBRE'])
+            MAIL_SUBJECT        = str(fila['MAIL_SUBJECT'])
+            ENVIAR_MAIL         = str(fila['ENVIAR_MAIL'])
+            MAIL_TEXTO_A        = str(fila['MAIL_TEXTO_A'])
+            MAIL_ULTIMO_AJUSTE  = str(fila['MAIL_ULTIMO_AJUSTE'])
+            MAIL_TEXTO_B        = str(fila['MAIL_TEXTO_B'])
+            MAIL_PROX_AJUSTE    = str(fila['MAIL_PROX_AJUSTE'])
+            MAIL_TEXTO_C        = str(fila['MAIL_TEXTO_C'])
+            MAIL_NUEVA_TARIFA   = str(fila['MAIL_NUEVA_TARIFA'])
+            MAIL_IVA            = str(fila['MAIL_IVA'])
+            MAIL_TEXTO_D        = str(fila['MAIL_TEXTO_D'])
+            MAIL_FIRMA          = str(fila['MAIL_FIRMA'])
+            columna_destino     = str(fila['ULTIMO_ENVIO'])
+            fila_destino        = indice + 1
+            MSG_SUBJECT         = MAIL_SUBJECT + " " + EMPRESA_NOMBRE
+            MAIL_FULL_MSG       = "Estimado/a cliente,\n\n" + MAIL_TEXTO_A + " " + MAIL_ULTIMO_AJUSTE + " " + MAIL_TEXTO_B + " " + MAIL_PROX_AJUSTE + " " + MAIL_TEXTO_C + " " + MAIL_NUEVA_TARIFA + " " + MAIL_IVA + "\n\n" + MAIL_TEXTO_D + "\n\nSin más, reciba un cordial saludo.\n\n" + MAIL_FIRMA + " "
+
+            if ENVIAR_MAIL == "si":
+                print(correos, MSG_SUBJECT, MAIL_FULL_MSG)
+                print("\n")
+                enviar_mail(correos, MSG_SUBJECT, MAIL_FULL_MSG)
+                print("#----------------------------\n")
+            if ENVIAR_MAIL == "test":
+                print("\n#----------------------------\nTEST: No se envia correo.")
+                print(MAIL_FULL_MSG)
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+
+if __name__ == "__main__":
+    LeerColumnaExcel(libro_excel)
